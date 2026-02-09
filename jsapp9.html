@@ -1,0 +1,178 @@
+index.html
+<html>
+<head>
+    <title>Pagination</title>
+    <style>
+        table{width: 25%; border: 1px solid #555}
+        
+        table tr{border: 1px solid #555}
+
+        table td{border: 1px solid #555}
+
+        .page-nav {background-color: yellowgreen; width: 25%; display: flex; 
+            flex-wrap: wrap; justify-content: center}
+
+        .page-nav button{background-color: #333; color: #fff;}
+
+        .page-nav button:hover{background-color: rgb(120, 15, 15); color: #fff; 
+            cursor: pointer;}
+
+        .current-page {
+            background-color: rgb(120, 15, 15) !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Daftar Komponen</h1>
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Nama Komponen</th>
+                <th>Qty</th>
+                <th>Harga</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Product 1</td>
+                <td>10</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Product 2</td>
+                <td>8</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Product 3</td>
+                <td>6</td>
+                <td>14</td>
+            </tr>
+            <tr>
+                <td>Product 4</td>
+                <td>20</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>Product 5</td>
+                <td>10</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>Product 6</td>
+                <td>4</td>
+                <td>22</td>
+            </tr>
+            <tr>
+                <td>Product 7</td>
+                <td>12</td>
+                <td>55</td>
+            </tr>
+            <tr>
+                <td>Product 8</td>
+                <td>2</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>Product 9</td>
+                <td>6</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>Product 10</td>
+                <td>12</td>
+                <td>42</td>
+            </tr>
+            <tr>
+                <td>Product 11</td>
+                <td>15</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>Product 12</td>
+                <td>3</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Product 13</td>
+                <td>5</td>
+                <td>22</td>
+            </tr>
+            <tr>
+                <td>Product 14</td>
+                <td>5</td>
+                <td>25</td>
+            </tr>
+        </tbody>
+    </table>
+
+<script>
+    const table = document.getElementById('table');
+    const rows = table.querySelectorAll('tbody tr');
+
+    const rowsPerPage = 5;
+    let currentPage = 1;
+
+    const pageNav = document.createElement('div');
+    pageNav.classList.add('page-nav');
+    table.parentNode.insertBefore(pageNav, table.nextSibling);
+
+    const showPage = (page) => {
+        
+        currentPage = page;
+
+        const startIdx = (page - 1) * rowsPerPage;
+        const endIdx = startIdx + rowsPerPage;
+
+        // Hide all rows
+        for(let i = 0; i < rows.length; i++){
+            rows[i].style.display = 'none';
+        }
+
+        for(let i = startIdx; i < endIdx && i < rows.length; i++){
+             rows[i].style.display = 'table-row';
+        }
+
+        const buttons = document.querySelectorAll('.page-nav button');
+        for(let i = 0; i < buttons.length; i++){
+            buttons[i].classList.remove('current-page');
+        }
+
+        if(rows.length > 0)
+        {
+            document.querySelector(`#page-${currentPage}`).classList.add('current-page');
+        }
+    }
+
+    // Function to create the page buttons
+    const createPageButtons = () => {
+        
+        // calculate the total number of pages
+        const pages = Math.ceil(rows.length / rowsPerPage);
+
+        for(let i = 1; i <= pages; i++)
+        {
+            const button = document.createElement('button');
+
+            button.id = `page-${i}`;
+
+            button.textContent = i;
+
+            if(i === 1)
+            {
+                button.classList.add('current-page');
+            }
+            button.addEventListener('click', () => {
+                showPage(i);
+            });
+            pageNav.appendChild(button);
+        }
+    }
+
+    createPageButtons();
+
+    showPage(1);
+
+</script>
+</body>
+  </html>
